@@ -5,7 +5,6 @@ import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.*;
 import java.util.concurrent.*;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 public class Main {
@@ -18,9 +17,6 @@ public class Main {
 
     // Kolejka blokująca przechowująca obiekty Optional<Path>
     private static final BlockingQueue<Optional<Path>> queue = new LinkedBlockingQueue<>(QUEUE_CAPACITY);
-
-    // Flaga sterująca pracą producenta (można użyć przy zatrzymywaniu)
-    private static final AtomicBoolean stopFlag = new AtomicBoolean(false);
 
     public static void main(String[] args) {
         // Tworzymy pulę wątków: 1 producent + NUM_CONSUMERS konsumentów
@@ -72,13 +68,13 @@ public class Main {
                     try {
                         Optional<Path> optPath = queue.take();
                         // Jeżeli otrzymamy poison pill, kończymy pracę konsumenta
-                        if (!optPath.isPresent()) {
+                        if (optPath.isEmpty()) {
                             System.out.println(threadName + " – otrzymano poison pill. Zakończenie pracy.");
                             break;
                         }
                         Path file = optPath.get();
                         // Obliczamy statystykę słów dla pliku
-                        Map<String, Long> stats = getLinkedCountedWords(file, WORDS_LIMIT);
+                        Map<String, Long> stats = getLinkedCountedWords(file);
                         System.out.println(threadName + " – przetworzono plik: " + file);
                         System.out.println("Top " + WORDS_LIMIT + " słów: " + stats);
                     } catch (InterruptedException e) {
@@ -95,7 +91,7 @@ public class Main {
         // Zamykamy pulę wątków
         executor.shutdown();
         try {
-            if (!executor.awaitTermination(5, TimeUnit.MINUTES)) {
+            if (!executor.awaitTermination(1, TimeUnit.MINUTES)) {
                 executor.shutdownNow();
             }
         } catch (InterruptedException e) {
@@ -103,41 +99,29 @@ public class Main {
         }
     }
 
-    /**
-     * Metoda zwraca najczęściej występujące słowa w pliku.
-     * - Dzieli linie na słowa za pomocą wyrażenia regularnego.
-     * - Usuwa znaki nie będące literami i cyframi.
-     * - Konwertuje słowa na małe litery.
-     * - Filtrowanie – tylko słowa o długości co najmniej 3 znaków.
-     * - Grupuje słowa i liczy ich wystąpienia.
-     * - Sortuje według liczby wystąpień malejąco.
-     * - Zwraca wynik w LinkedHashMap (zachowuje kolejność).
-     */
-    private static Map<String, Long> getLinkedCountedWords(Path path, int wordsLimit) throws IOException {
+    // Metoda zliczająca i zwracająca ilość wyrazów
+    private static Map<String, Long> getLinkedCountedWords(Path path) throws IOException {
         try (BufferedReader reader = Files.newBufferedReader(path, StandardCharsets.UTF_8)) {
             return reader.lines()
-                    // Podział linii na słowa (rozdzielamy według białych znaków)
+                    // Podział linii na słowa
                     .flatMap(line -> Arrays.stream(line.split("\\s+")))
-                    // Usuwamy znaki specjalne (zostają tylko litery, cyfry oraz polskie znaki)
+                    // Usuwamy znaki specjalne regexem
                     .map(word -> word.replaceAll("[^a-zA-Z0-9ąćęłńóśźżĄĆĘŁŃÓŚŹŻ]", ""))
-                    // Konwersja do małych liter
                     .map(String::toLowerCase)
-                    // Filtrowanie – tylko słowa o długości co najmniej 3 znaków
                     .filter(word -> word.length() >= 3)
                     // Grupowanie słów i zliczanie ich wystąpień
                     .collect(Collectors.groupingBy(word -> word, Collectors.counting()))
                     .entrySet().stream()
-                    // Sortowanie według liczby wystąpień (malejąco)
+                    // Sortowanie według liczby wystąpień malejąco
                     .sorted(Map.Entry.<String, Long>comparingByValue(Comparator.reverseOrder()))
-                    .limit(wordsLimit)
+                    .limit(WORDS_LIMIT)
                     // Zbieranie wyników do LinkedHashMap, aby zachować kolejność sortowania
                     .collect(Collectors.toMap(
                             Map.Entry::getKey,
                             Map.Entry::getValue,
-                            (e1, e2) -> e1,
-                            LinkedHashMap::new
+                            (e1, e2) -> e1, // merge function ignoruje drugi element o tym samm kluczu
+                            LinkedHashMap::new // wrzuca to wszystko do listy uwzględniającej kolejność
                     ));
         }
     }
 }
-

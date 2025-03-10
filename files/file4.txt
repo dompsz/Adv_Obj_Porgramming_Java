@@ -1,0 +1,2 @@
+Wzorzec producent-konsument jest często stosowany w programowaniu równoległym.
+Konsument przetwarza dane, a producent dostarcza pliki tekstowe do analizy.
