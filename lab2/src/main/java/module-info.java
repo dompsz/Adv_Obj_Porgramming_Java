@@ -1,9 +1,20 @@
-module com.example.lab2 {
-    requires javafx.controls;
-    requires javafx.fxml;
-
-    requires org.controlsfx.controls;
-
-    opens com.example.lab2 to javafx.fxml;
-    exports com.example.lab2;
-}
+module project.jfx.client {
+	exports com.project.datasource;
+	exports com.project.dao;
+	exports com.project.model;
+	exports com.project.app;
+	exports com.project.controller;
+	requires javafx.base;
+	requires javafx.fxml;
+	requires javafx.controls;
+	requires transitive javafx.graphics;
+	requires com.zaxxer.hikari;
+	requires transitive java.sql;
+	requires org.hsqldb;
+	requires org.slf4j;
+	requires ch.qos.logback.classic;
+	requires ch.qos.logback.core;
+	opens com.project.app to javafx.graphics, javafx.fxml, javafx.base, javafx.controls;
+	opens com.project.model to javafx.graphics, javafx.fxml, javafx.base, javafx.controls;
+	opens com.project.controller to javafx.graphics, javafx.fxml, javafx.base, javafx.controls;
+ }
