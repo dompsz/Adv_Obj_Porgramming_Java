@@ -173,29 +173,45 @@ public class ProjectController {
 		 wykonawca.execute(() -> loadPage(search4, pageNo, pageSize));
 	 }
 	 
-	   private void loadPage(String search4, Integer pageNo, Integer pageSize) {
-	       try {
-	           final List<Projekt> projektList = new ArrayList<>();
-	           if (search4 != null && !search4.isEmpty()) {
-	               /* TODO: Check via regex if search4 is an id, date or name,
-	                  then call the appropriate DAO method */
-	               projektList.addAll(projektDAO.getProjektyWhereNazwaLike(search4, pageNo * pageSize, pageSize));
-	           } else {
-	               projektList.addAll(projektDAO.getProjekty(pageNo * pageSize, pageSize));
-	           }
-	           Platform.runLater(() -> {
-	               projekty.clear();
-	               projekty.addAll(projektList);
-	           });
-	       } catch (RuntimeException e) {
-	           String errMsg = "Błąd podczas pobierania listy projektów.";
-	           logger.error(errMsg, e);
-	           String errDetails = (e.getCause() != null)
-	                   ? e.getMessage() + "\n" + e.getCause().getMessage()
-	                   : e.getMessage();
-	           Platform.runLater(() -> showError(errMsg, errDetails));
-	       }
-	   }
+	 private void loadPage(String search4, Integer pageNo, Integer pageSize) {
+		    try {
+		        final List<Projekt> projektList = new ArrayList<>();
+		        if (search4 != null && !search4.isEmpty()) {
+		            // Sprawdzenie czy wyszukiwana wartość jest identyfikatorem (liczba)
+		            if (search4.matches("\\d+")) {
+		                // Wyszukiwanie po identyfikatorze
+		                Projekt projekt = projektDAO.getProjekt(Integer.parseInt(search4));
+		                if (projekt != null) {
+		                    projektList.add(projekt);
+		                }
+		            }
+		            // Sprawdzenie czy wyszukiwana wartość jest datą w formacie YYYY-MM-DD
+		            else if (search4.matches("^\\d{4}-\\d{2}-\\d{2}$")) {
+		                LocalDate dataOddania = LocalDate.parse(search4);
+		                // Wyszukiwanie po dacie oddania
+		                projektList.addAll(projektDAO.getProjektyWhereDataOddaniaIs(dataOddania, pageNo * pageSize, pageSize));
+		            }
+		            // W przeciwnym razie traktujemy wyszukiwaną wartość jako część nazwy
+		            else {
+		                projektList.addAll(projektDAO.getProjektyWhereNazwaLike(search4, pageNo * pageSize, pageSize));
+		            }
+		        } else {
+		            projektList.addAll(projektDAO.getProjekty(pageNo * pageSize, pageSize));
+		        }
+		        Platform.runLater(() -> {
+		            projekty.clear();
+		            projekty.addAll(projektList);
+		        });
+		    } catch (RuntimeException e) {
+		        String errMsg = "Błąd podczas pobierania listy projektów.";
+		        logger.error(errMsg, e);
+		        String errDetails = (e.getCause() != null)
+		                ? e.getMessage() + "\n" + e.getCause().getMessage()
+		                : e.getMessage();
+		        Platform.runLater(() -> showError(errMsg, errDetails));
+		    }
+		}
+
 
 	   /** Metoda pomocnicza do prezentowania użytkownikowi informacji o błędach */
 	   private void showError(String header, String content) {
