@@ -18,10 +18,10 @@
             <HBox prefHeight="47.0" prefWidth="547.0" spacing="10.0">
                <children>
                   <TextField fx:id="txtSzukaj" />
-                  <Button mnemonicParsing="false" text="Szukaj" />
+                  <Button fx:id="btnSzukaj" mnemonicParsing="false" onAction="#onActionBtnSzukaj" text="Szukaj" />
                   <Label text="Rozmiar Strony:" />
-                  <ChoiceBox fx:id="cbPageSizes" prefWidth="150.0" />
-                  <Button mnemonicParsing="false" text="Dodaj" />
+                  <ChoiceBox fx:id="cbPageSizes" onAction="#onChangePageSize" />
+                  <Button fx:id="btnDodaj" mnemonicParsing="false" onAction="#onActionBtnDodaj" text="Dodaj" />
                </children>
                <opaqueInsets>
                   <Insets />

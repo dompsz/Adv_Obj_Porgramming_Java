@@ -20,7 +20,7 @@ public class ProjektDAOImpl implements ProjektDAO {
 	 try (Connection connect = DataSource.getConnection();
 		 PreparedStatement prepStmt = connect.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 		 //Wstawianie do zapytania odpowiednich wartości w miejsce znaków '?'
-		 //Uwaga! Indeksowanie znaków '?' zaczyna się od 1!
+		 //Uwaga Indeksowanie znaków '?' zaczyna się od 1!
 		 prepStmt.setString(1, projekt.getNazwa());
 		 prepStmt.setString(2, projekt.getOpis());
 		 if(projekt.getDataCzasUtworzenia() == null)

@@ -90,11 +90,14 @@ public class ProjectController {
 
 	 @FXML
 	 public void initialize() { //Metoda automatycznie wywoływana przez JavaFX zaraz po wstrzyknięciu
-		 search4 = ""; //wszystkich komponentów. Uwaga! Wszelkie modyfikacje komponentów
-		 pageNo = 0; //(np. cbPageSizes) trzeba realizować wewnątrz tej metody. Nigdy
-		 pageSize = 10; //nie używaj do tego celu konstruktora.
-		 cbPageSizes.getItems().addAll(5, 10, 20, 50, 100);
-		 cbPageSizes.setValue(pageSize);
+		// Inicjalizacja wartości
+		    search4 = ""; 
+		    pageNo = 0;
+		    pageSize = 5;
+
+		    // Ustawienie dostępnych rozmiarów strony
+		    cbPageSizes.getItems().addAll(5, 10, 20, 50, 100);
+		    cbPageSizes.setValue(pageSize);
 		 colId.setCellValueFactory(new PropertyValueFactory<Projekt, Integer>("projektId"));
 		 colNazwa.setCellValueFactory(new PropertyValueFactory<Projekt, String>("nazwa"));
 		 colOpis.setCellValueFactory(new PropertyValueFactory<Projekt, String>("opis"));
@@ -108,27 +111,22 @@ public class ProjectController {
 			 { // Blok inicjalizujący w anonimowej klasie wewnętrznej
 				 Button btnEdit = new Button("Edycja");
 				 Button btnRemove = new Button("Usuń");
-				 Button btnTask = new Button("Zadania");
 				 btnEdit.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 				 btnRemove.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-				 btnTask.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 				 btnEdit.setOnAction(event -> {
 					 edytujProjekt(getCurrentProjekt());
 				 });
 				 btnRemove.setOnAction(event -> {
-					 //TODO wywoływać metodę usunProjekt(getCurrentProjekt()); po jej utworzeniu
+					 usunProjekt(getCurrentProjekt());
 				 });
-				 btnTask.setOnAction(event -> {
-					 //TODO wywoływać metodę openZadanieFrame(getCurrentProjekt()); po jej utworzeniu
-				 });
+
 				 pane = new GridPane();
 				 pane.setAlignment(Pos.CENTER);
 				 pane.setHgap(10);
 				 pane.setVgap(10);
 				 pane.setPadding(new Insets(5, 5, 5, 5));
-				 pane.add(btnTask, 0, 0);
-				 pane.add(btnEdit, 0, 1);
-				 pane.add(btnRemove, 0, 2);
+				 pane.add(btnEdit, 0, 0);
+				 pane.add(btnRemove, 0, 1);
 			 }
 			 private Projekt getCurrentProjekt() {
 				 int index = this.getTableRow().getIndex();
@@ -144,13 +142,13 @@ public class ProjectController {
 		
 			//Dodanie kolumny do tabeli
 			 tblProjekt.getColumns().add(colEdit);
-			 //Ustawienie względnej szerokości poszczególnych kolumn (liczą się proporcje)
+			 tblProjekt.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 			 colId.setMaxWidth(5000);
 			 colNazwa.setMaxWidth(10000);
 			 colOpis.setMaxWidth(10000);
 			 colDataCzasUtworzenia.setMaxWidth(9000);
 			 colDataOddania.setMaxWidth(7000);
-			 colEdit.setMaxWidth(7000);
+			 colEdit.setMaxWidth(15000);
 
 		 
 		 colDataCzasUtworzenia.setCellFactory(column -> new TableCell<Projekt, LocalDateTime>() {
@@ -176,32 +174,42 @@ public class ProjectController {
 	 private void loadPage(String search4, Integer pageNo, Integer pageSize) {
 		    try {
 		        final List<Projekt> projektList = new ArrayList<>();
+		        int totalRows = projektDAO.getRowsNumber();  // Całkowita liczba rekordów
+		        int totalPages = (totalRows - 1) / pageSize;     // Obliczenie liczby stron
+		        
+		        // Ustal finalną, efektywnie finalną zmienną currentPageNo
+		        final int currentPageNo = (pageNo > totalPages) ? totalPages : pageNo;
+
+		        // Ładowanie danych według kryteriów wyszukiwania
 		        if (search4 != null && !search4.isEmpty()) {
-		            // Sprawdzenie czy wyszukiwana wartość jest identyfikatorem (liczba)
 		            if (search4.matches("\\d+")) {
 		                // Wyszukiwanie po identyfikatorze
 		                Projekt projekt = projektDAO.getProjekt(Integer.parseInt(search4));
 		                if (projekt != null) {
 		                    projektList.add(projekt);
 		                }
-		            }
-		            // Sprawdzenie czy wyszukiwana wartość jest datą w formacie YYYY-MM-DD
-		            else if (search4.matches("^\\d{4}-\\d{2}-\\d{2}$")) {
-		                LocalDate dataOddania = LocalDate.parse(search4);
+		            } else if (search4.matches("^\\d{4}-\\d{2}-\\d{2}$")) {
 		                // Wyszukiwanie po dacie oddania
-		                projektList.addAll(projektDAO.getProjektyWhereDataOddaniaIs(dataOddania, pageNo * pageSize, pageSize));
-		            }
-		            // W przeciwnym razie traktujemy wyszukiwaną wartość jako część nazwy
-		            else {
-		                projektList.addAll(projektDAO.getProjektyWhereNazwaLike(search4, pageNo * pageSize, pageSize));
+		                LocalDate dataOddania = LocalDate.parse(search4);
+		                projektList.addAll(projektDAO.getProjektyWhereDataOddaniaIs(dataOddania, currentPageNo * pageSize, pageSize));
+		            } else {
+		                // Wyszukiwanie po nazwie
+		                projektList.addAll(projektDAO.getProjektyWhereNazwaLike(search4, currentPageNo * pageSize, pageSize));
 		            }
 		        } else {
-		            projektList.addAll(projektDAO.getProjekty(pageNo * pageSize, pageSize));
+		            projektList.addAll(projektDAO.getProjekty(currentPageNo * pageSize, pageSize));
 		        }
+
 		        Platform.runLater(() -> {
 		            projekty.clear();
 		            projekty.addAll(projektList);
+		            // Używamy currentPageNo w lambdach – jest on finalny
+		            btnWstecz.setDisable(currentPageNo <= 0);
+		            btnDalej.setDisable(currentPageNo >= totalPages);
+		            btnPierwsza.setDisable(currentPageNo == 0);
+		            btnOstatnia.setDisable(currentPageNo == totalPages);
 		        });
+
 		    } catch (RuntimeException e) {
 		        String errMsg = "Błąd podczas pobierania listy projektów.";
 		        logger.error(errMsg, e);
@@ -211,8 +219,7 @@ public class ProjectController {
 		        Platform.runLater(() -> showError(errMsg, errDetails));
 		    }
 		}
-
-
+	 
 	   /** Metoda pomocnicza do prezentowania użytkownikowi informacji o błędach */
 	   private void showError(String header, String content) {
 	       Alert alert = new Alert(AlertType.ERROR);
@@ -245,16 +252,21 @@ public class ProjectController {
 
 	   @FXML
 	   private void onActionBtnDalej(ActionEvent event) {
-	       pageNo++;
-	       wykonawca.execute(() -> loadPage(search4, pageNo, pageSize));
+	       pageNo++;  // Increment page number
+	       updatePage(pageNo);  // Pass updated pageNo
 	   }
 
 	   @FXML
 	   private void onActionBtnWstecz(ActionEvent event) {
 	       if (pageNo > 0) {
-	           pageNo--;
-	           wykonawca.execute(() -> loadPage(search4, pageNo, pageSize));
+	           pageNo--;  // Decrement page number
+	           updatePage(pageNo);  // Pass updated pageNo
 	       }
+	   }
+
+	   private void updatePage(int pageNo) {
+	       int currentPageNo = pageNo; // Capture the value before using in lambda
+	       wykonawca.execute(() -> loadPage(search4, currentPageNo, pageSize));  // Use captured value
 	   }
 
 	   @FXML
@@ -274,118 +286,116 @@ public class ProjectController {
 	   public void onActionBtnDodaj(ActionEvent event) {
 	       edytujProjekt(new Projekt());
 	   }
+	   
+	   @FXML
+	   private void onChangePageSize(ActionEvent event) {
+	       pageSize = cbPageSizes.getValue();
+	       pageNo = 0;
+	       wykonawca.execute(() -> loadPage(search4, pageNo, pageSize));
+	   }
+
 
 	 
-	 private void edytujProjekt(Projekt projekt) {
-		 Dialog<Projekt> dialog = new Dialog<>();
-		 dialog.setTitle("Edycja");
-		 if (projekt.getProjektId() != null) {
-		 dialog.setHeaderText("Edycja danych projektu");
-		 } else {
-		 dialog.setHeaderText("Dodawanie projektu");
-		 }
-		 dialog.setResizable(true);
-		 Label lblId = getRightLabel("Id: ");
-		 Label lblNazwa = getRightLabel("Nazwa: ");
-		 Label lblOpis = getRightLabel("Opis: ");
-		 Label lblDataCzasUtworzenia = getRightLabel("Data utworzenia: ");
-		 Label lblDataOddania = getRightLabel("Data oddania: ");
-		 Label txtId = new Label();
-		 if (projekt.getProjektId() != null)
-		 txtId.setText(projekt.getProjektId().toString());
-		 TextField txtNazwa = new TextField();
-		 if (projekt.getNazwa() != null)
-		 txtNazwa.setText(projekt.getNazwa());
-		 TextArea txtOpis = new TextArea();
-		 txtOpis.setPrefRowCount(6);
-		 txtOpis.setPrefColumnCount(40);
-		 txtOpis.setWrapText(true);
-		 if (projekt.getOpis() != null)
-		 txtOpis.setText(projekt.getOpis());
-		 Label txtDataUtworzenia = new Label();
-		 if (projekt.getDataCzasUtworzenia() != null)
-		 txtDataUtworzenia.setText(dateTimeFormater.format(projekt.getDataCzasUtworzenia()));
-		 DatePicker dtDataOddania = new DatePicker();
-		 dtDataOddania.setPromptText("RRRR-MM-DD");
-		 dtDataOddania.setConverter(new StringConverter<LocalDate>() {
-		 @Override
-		 public String toString(LocalDate date) {
-		 return date != null ? dateFormatter.format(date) : null;
-		 }
-		 @Override
-		 public LocalDate fromString(String text) {
-		 return text == null || text.trim().isEmpty() ? null : LocalDate.parse(text, dateFormatter);
-		 }
-		 });
-		 dtDataOddania.getEditor().focusedProperty().addListener((obsValue, oldFocus, newFocus) -> {
-		 if (!newFocus) {
-		 try {
-		 dtDataOddania.setValue(dtDataOddania.getConverter().fromString(
-		 dtDataOddania.getEditor().getText()));
-		 } catch (DateTimeParseException e) {
-		 dtDataOddania.getEditor().setText(dtDataOddania.getConverter()
-		 .toString(dtDataOddania.getValue()));
-		 }
-		 }
-		 });
+	   private void edytujProjekt(Projekt projekt) {
+		    Dialog<Projekt> dialog = new Dialog<>();
+		    dialog.setTitle("Edycja");
+		    if (projekt.getProjektId() != null) {
+		        dialog.setHeaderText("Edycja danych projektu");
+		    } else {
+		        dialog.setHeaderText("Dodawanie projektu");
+		    }
+		    dialog.setResizable(true);
+		    Label lblNazwa = getRightLabel("Nazwa: ");
+		    Label lblOpis = getRightLabel("Opis: ");
+		    Label lblDataOddania = getRightLabel("Data oddania: ");
+		    TextField txtNazwa = new TextField();
+		    if (projekt.getNazwa() != null)
+		        txtNazwa.setText(projekt.getNazwa());
+		    TextArea txtOpis = new TextArea();
+		    txtOpis.setPrefRowCount(6);
+		    txtOpis.setPrefColumnCount(40);
+		    txtOpis.setWrapText(true);
+		    if (projekt.getOpis() != null)
+		        txtOpis.setText(projekt.getOpis());
+		    DatePicker dtDataOddania = new DatePicker();
+		    dtDataOddania.setPromptText("RRRR-MM-DD");
+		    dtDataOddania.setConverter(new StringConverter<LocalDate>() {
+		        @Override
+		        public String toString(LocalDate date) {
+		            return date != null ? dateFormatter.format(date) : null;
+		        }
 
-		 if (projekt.getDataOddania() != null) {
-		 dtDataOddania.setValue(projekt.getDataOddania());
-		 }
-		 GridPane grid = new GridPane();
-		 grid.setHgap(10);
-		 grid.setVgap(10);
-		 grid.setPadding(new Insets(5, 5, 5, 5));
-		 grid.add(lblId, 0, 0);
-		 grid.add(txtId, 1, 0);
-		 grid.add(lblDataCzasUtworzenia, 0, 1);
-		 grid.add(txtDataUtworzenia, 1, 1);
-		 grid.add(lblNazwa, 0, 2);
-		 grid.add(txtNazwa, 1, 2);
-		 grid.add(lblOpis, 0, 3);
-		 grid.add(txtOpis, 1, 3);
-		 grid.add(lblDataOddania, 0, 4);
-		 grid.add(dtDataOddania, 1, 4);
-		 dialog.getDialogPane().setContent(grid);
-		 ButtonType buttonTypeOk = new ButtonType("Zapisz", ButtonData.OK_DONE);
-		 ButtonType buttonTypeCancel = new ButtonType("Anuluj", ButtonData.CANCEL_CLOSE);
-		 dialog.getDialogPane().getButtonTypes().add(buttonTypeOk);
-		 dialog.getDialogPane().getButtonTypes().add(buttonTypeCancel);
-		 dialog.setResultConverter(new Callback<ButtonType, Projekt>() {
-		 @Override
-		 public Projekt call(ButtonType butonType) {
-		 if (butonType == buttonTypeOk) {
-		 projekt.setNazwa(txtNazwa.getText().trim());
-		 projekt.setOpis(txtOpis.getText().trim());
-		 projekt.setDataOddania(dtDataOddania.getValue());
-		 return projekt;
-		 }
-		return null;
-		 }
-		 });
-		 Optional<Projekt> result = dialog.showAndWait();
-		 if (result.isPresent()) {
-		 wykonawca.execute(() -> {
-		 try {
-		 projektDAO.setProjekt(projekt);
-		 Platform.runLater(() -> {
-		 if (tblProjekt.getItems().contains(projekt)) {
-		 tblProjekt.refresh();
-		 } else {
-		 tblProjekt.getItems().add(0, projekt);
-		 }
-		 });
-		 } catch (RuntimeException e) {
-		 String errMsg = "Błąd podczas zapisywania danych projektu!";
-		 logger.error(errMsg, e);
-		 String errDetails = e.getCause() != null ?
-		 e.getMessage() + "\n" + e.getCause().getMessage()
-		: e.getMessage();
-		 Platform.runLater(() -> showError(errMsg, errDetails));
-		 }
-		 });
-		 }
-	 }
+		        @Override
+		        public LocalDate fromString(String text) {
+		            return text == null || text.trim().isEmpty() ? null : LocalDate.parse(text, dateFormatter);
+		        }
+		    });
+		    dtDataOddania.getEditor().focusedProperty().addListener((obsValue, oldFocus, newFocus) -> {
+		        if (!newFocus) {
+		            try {
+		                dtDataOddania.setValue(dtDataOddania.getConverter().fromString(
+		                        dtDataOddania.getEditor().getText()));
+		            } catch (DateTimeParseException e) {
+		                dtDataOddania.getEditor().setText(dtDataOddania.getConverter()
+		                        .toString(dtDataOddania.getValue()));
+		            }
+		        }
+		    });
+
+		    if (projekt.getDataOddania() != null) {
+		        dtDataOddania.setValue(projekt.getDataOddania());
+		    }
+		    GridPane grid = new GridPane();
+		    grid.setHgap(10);
+		    grid.setVgap(10);
+		    grid.setPadding(new Insets(5, 5, 5, 5));
+		    grid.add(lblNazwa, 0, 2);
+		    grid.add(txtNazwa, 1, 2);
+		    grid.add(lblOpis, 0, 3);
+		    grid.add(txtOpis, 1, 3);
+		    grid.add(lblDataOddania, 0, 4);
+		    grid.add(dtDataOddania, 1, 4);
+		    dialog.getDialogPane().setContent(grid);
+		    ButtonType buttonTypeOk = new ButtonType("Zapisz", ButtonData.OK_DONE);
+		    ButtonType buttonTypeCancel = new ButtonType("Anuluj", ButtonData.CANCEL_CLOSE);
+		    dialog.getDialogPane().getButtonTypes().add(buttonTypeOk);
+		    dialog.getDialogPane().getButtonTypes().add(buttonTypeCancel);
+		    dialog.setResultConverter(new Callback<ButtonType, Projekt>() {
+		        @Override
+		        public Projekt call(ButtonType butonType) {
+		            if (butonType == buttonTypeOk) {
+		                projekt.setNazwa(txtNazwa.getText().trim());
+		                projekt.setOpis(txtOpis.getText().trim());
+		                projekt.setDataOddania(dtDataOddania.getValue());
+		                return projekt;
+		            }
+		            return null;
+		        }
+		    });
+		    Optional<Projekt> result = dialog.showAndWait();
+		    if (result.isPresent()) {
+		        wykonawca.execute(() -> {
+		            try {
+		                projektDAO.setProjekt(projekt);
+		                Platform.runLater(() -> {
+		                    if (tblProjekt.getItems().contains(projekt)) {
+		                        tblProjekt.refresh();
+		                    } else {
+		                        tblProjekt.getItems().add(0, projekt);
+		                    }
+		                });
+		            } catch (RuntimeException e) {
+		                String errMsg = "Błąd podczas zapisywania danych projektu!";
+		                logger.error(errMsg, e);
+		                String errDetails = e.getCause() != null ?
+		                        e.getMessage() + "\n" + e.getCause().getMessage()
+		                        : e.getMessage();
+		                Platform.runLater(() -> showError(errMsg, errDetails));
+		            }
+		        });
+		    }
+		}
+
 	 
 	 private Label getRightLabel(String text) {
 		 Label lbl = new Label(text);
@@ -393,4 +403,32 @@ public class ProjectController {
 		 lbl.setAlignment(Pos.CENTER_RIGHT);
 		 return lbl;
 	 }
+	 
+	 private void usunProjekt(Projekt projekt) {
+		    Alert alert = new Alert(AlertType.CONFIRMATION);
+		    alert.setTitle("Potwierdzenie usunięcia");
+		    alert.setHeaderText("Czy na pewno chcesz usunąć projekt?");
+		    alert.setContentText("Projekt: " + projekt.getNazwa());
+
+		    Optional<ButtonType> result = alert.showAndWait();
+		    if (result.isPresent() && result.get() == ButtonType.OK) {
+		        wykonawca.execute(() -> {
+		            try {
+		                projektDAO.deleteProjekt(projekt.getProjektId());
+		                Platform.runLater(() -> tblProjekt.getItems().remove(projekt));
+		            } catch (RuntimeException e) {
+		                String errMsg = "Błąd podczas usuwania projektu!";
+		                logger.error(errMsg, e);
+		                String errDetails = e.getCause() != null ? e.getMessage() + "\n" + e.getCause().getMessage() : e.getMessage();
+		                Platform.runLater(() -> showError(errMsg, errDetails));
+		            }
+		        });
+		    }
+		}
+
+		private void openZadanieFrame(Projekt projekt) {
+		    // TODO
+		    logger.info("Opening task frame for project: " + projekt.getNazwa());
+		}
+
 }
