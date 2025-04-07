@@ -94,7 +94,6 @@ public class ProjectController {
 		    search4 = ""; 
 		    pageNo = 0;
 		    pageSize = 5;
-
 		    // Ustawienie dostępnych rozmiarów strony
 		    cbPageSizes.getItems().addAll(5, 10, 20, 50, 100);
 		    cbPageSizes.setValue(pageSize);
@@ -252,21 +251,21 @@ public class ProjectController {
 
 	   @FXML
 	   private void onActionBtnDalej(ActionEvent event) {
-	       pageNo++;  // Increment page number
-	       updatePage(pageNo);  // Pass updated pageNo
+	       pageNo++;
+	       updatePage(pageNo);
 	   }
 
 	   @FXML
 	   private void onActionBtnWstecz(ActionEvent event) {
 	       if (pageNo > 0) {
-	           pageNo--;  // Decrement page number
-	           updatePage(pageNo);  // Pass updated pageNo
+	           pageNo--;
+	           updatePage(pageNo);
 	       }
 	   }
 
 	   private void updatePage(int pageNo) {
 	       int currentPageNo = pageNo; // Capture the value before using in lambda
-	       wykonawca.execute(() -> loadPage(search4, currentPageNo, pageSize));  // Use captured value
+	       wykonawca.execute(() -> loadPage(search4, currentPageNo, pageSize));
 	   }
 
 	   @FXML

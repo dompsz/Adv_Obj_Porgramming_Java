@@ -5,7 +5,3 @@ CREATE INDEX IF NOT EXISTS projekt_nazwa_idx ON projekt(nazwa)
 CREATE INDEX IF NOT EXISTS zadanie_nazwa_idx ON zadanie(nazwa)
 ALTER TABLE zadanie ADD CONSTRAINT IF NOT EXISTS zadanie_projekt_fk FOREIGN KEY (projekt_id)\u000aREFERENCES projekt (projekt_id) ON DELETE CASCADE
 ALTER TABLE zadanie ADD CONSTRAINT IF NOT EXISTS unique_kolejnosc UNIQUE (kolejnosc, projekt_id)
-INSERT INTO PROJEKT VALUES(14,'a','a','2025-04-07 13:58:08.967035',NULL)
-COMMIT
-DELETE FROM PROJEKT WHERE PROJEKT_ID=14
-COMMIT
