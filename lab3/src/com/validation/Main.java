@@ -8,9 +8,9 @@ public class Main {
         try {
             Student student = new Student();
             student.setEmail("abc1@pbs.edu.pl");
-            student.setImie("qwerty");
-            student.setNazwisko("8");
-            student.setNrIndeksu("abcdef");
+            student.setImie("Qwerty");
+            student.setNazwisko("Abcdefghij");
+            student.setNrIndeksu("122404");
 
             Validator.validate(student);
         } catch (ValidationException e) {
