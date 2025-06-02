@@ -1,27 +1,41 @@
 package com.project.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name="zadanie")
+@Table(name = "zadanie")
 public class Zadanie {
-@Id
-@GeneratedValue
-@Column(name="zadanie_id")
-private Integer zadanieId;
-/*TODO Uzupełnij kod o zmienne reprezentujące pozostałe pola tabeli zadanie (patrz rys. 3.1),
-. następnie wygeneruj dla nich akcesory i mutatory (Source -> Generate Getters and Setters),
-. ponadto dodaj pusty konstruktor oraz konstruktor ze zmiennymi nazwa, opis i kolejnosc.
-*/
-@ManyToOne
-@JoinColumn(name = "projekt_id")
-private Projekt projekt;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "zadanie_id")
+    private Integer zadanieId;
+
+    @NotBlank(message = "Nazwa zadania nie może być pusta")
+    private String nazwa;
+
+    private String opis;
+    private Integer kolejnosc;
+
+    @Column(name = "dataczas_dodania")
+    private LocalDateTime dataCzasDodania;
+
+    @ManyToOne
+    @JoinColumn(name = "projekt_id")
+    @JsonIgnoreProperties("zadania")
+    private Projekt projekt;
+
+    public Zadanie() {}
+
+    public Zadanie(String nazwa, String opis, Integer kolejnosc) {
+        this.nazwa = nazwa;
+        this.opis = opis;
+        this.kolejnosc = kolejnosc;
+    }
+
+    // Gettery i settery
 }
