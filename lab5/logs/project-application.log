@@ -1,0 +1,79 @@
+2025-06-23 13:47:38.318 [restartedMain] INFO  c.p.ProjectRestApiApplicationFrontEnd.logStarting(53) - Starting ProjectRestApiApplicationFrontEnd using Java 21.0.6 with PID 11452 (C:\Szkola\Adv_Obj_Porgramming_Java\project-web-app\build\classes\java\main started by HP in C:\Szkola\Adv_Obj_Porgramming_Java\project-web-app)
+2025-06-23 13:47:38.341 [restartedMain] INFO  c.p.ProjectRestApiApplicationFrontEnd.logStartupProfileInfo(652) - No active profile set, falling back to 1 default profile: "default"
+2025-06-23 13:47:41.202 [restartedMain] INFO  c.p.ProjectRestApiApplicationFrontEnd.logStarted(59) - Started ProjectRestApiApplicationFrontEnd in 3.696 seconds (process running for 6.601)
+2025-06-23 13:48:47.688 [restartedMain] INFO  c.p.ProjectRestApiApplicationFrontEnd.logStarting(53) - Starting ProjectRestApiApplicationFrontEnd using Java 21.0.6 with PID 6184 (C:\Szkola\Adv_Obj_Porgramming_Java\project-web-app\build\classes\java\main started by HP in C:\Szkola\Adv_Obj_Porgramming_Java\project-web-app)
+2025-06-23 13:48:47.691 [restartedMain] INFO  c.p.ProjectRestApiApplicationFrontEnd.logStartupProfileInfo(652) - No active profile set, falling back to 1 default profile: "default"
+2025-06-23 13:48:50.478 [restartedMain] INFO  c.p.ProjectRestApiApplicationFrontEnd.logStarted(59) - Started ProjectRestApiApplicationFrontEnd in 3.609 seconds (process running for 4.863)
+2025-06-23 13:49:17.454 [http-nio-8081-exec-1] INFO  c.project.service.ProjektServiceImpl.getProjekty(116) - REQUEST -> GET /api/projekty?page=0&size=20&sort=
+2025-06-23 13:49:38.995 [http-nio-8081-exec-5] INFO  c.project.service.ProjektServiceImpl.setProjekt(75) - REQUEST -> POST /api/projekty
+2025-06-23 13:50:51.168 [http-nio-8081-exec-8] INFO  c.project.service.ProjektServiceImpl.getProjekty(116) - REQUEST -> GET /api/projekty?page=0&size=20&sort=
+2025-06-23 13:50:53.096 [http-nio-8081-exec-10] INFO  c.project.service.ZadanieServiceImpl.getZadania(40) - REQUEST -> GET /api/zadania?page=0&size=20&sort=
+2025-06-23 13:50:53.188 [http-nio-8081-exec-1] INFO  c.project.service.ZadanieServiceImpl.getZadania(40) - REQUEST -> GET /api/zadania?page=0&size=20&sort=
+2025-06-23 14:00:01.182 [restartedMain] INFO  c.p.ProjectRestApiApplicationFrontEnd.logStarting(53) - Starting ProjectRestApiApplicationFrontEnd using Java 21.0.6 with PID 2272 (C:\Szkola\Adv_Obj_Porgramming_Java\project-web-app\build\classes\java\main started by HP in C:\Szkola\Adv_Obj_Porgramming_Java\project-web-app)
+2025-06-23 14:00:01.199 [restartedMain] INFO  c.p.ProjectRestApiApplicationFrontEnd.logStartupProfileInfo(652) - No active profile set, falling back to 1 default profile: "default"
+2025-06-23 14:00:06.662 [restartedMain] INFO  c.p.ProjectRestApiApplicationFrontEnd.logStarted(59) - Started ProjectRestApiApplicationFrontEnd in 7.195 seconds (process running for 9.671)
+2025-06-23 14:00:17.105 [http-nio-8081-exec-2] INFO  c.project.service.ProjektServiceImpl.getProjekty(116) - REQUEST -> GET /api/projekty?page=0&size=20&sort=
+2025-06-23 14:00:29.833 [http-nio-8081-exec-3] INFO  c.project.service.ProjektServiceImpl.setProjekt(75) - REQUEST -> POST /api/projekty
+2025-06-23 14:00:30.657 [http-nio-8081-exec-3] INFO  c.project.service.ProjektServiceImpl.setProjekt(87) - REQUEST (location) -> GET http://localhost:8080/api/projekty/1
+2025-06-23 14:00:31.045 [http-nio-8081-exec-4] INFO  c.project.service.ProjektServiceImpl.getProjekty(116) - REQUEST -> GET /api/projekty?page=0&size=20&sort=
+2025-06-23 14:00:43.199 [http-nio-8081-exec-6] INFO  c.project.service.ProjektServiceImpl.setProjekt(75) - REQUEST -> POST /api/projekty
+2025-06-23 14:00:43.329 [http-nio-8081-exec-6] INFO  c.project.service.ProjektServiceImpl.setProjekt(87) - REQUEST (location) -> GET http://localhost:8080/api/projekty/2
+2025-06-23 14:00:43.465 [http-nio-8081-exec-8] INFO  c.project.service.ProjektServiceImpl.getProjekty(116) - REQUEST -> GET /api/projekty?page=0&size=20&sort=
+2025-06-23 14:00:48.183 [http-nio-8081-exec-10] INFO  c.project.service.ProjektServiceImpl.getProjekt(43) - REQUEST -> GET /api/projekty/1
+2025-06-23 14:00:55.625 [http-nio-8081-exec-1] INFO  c.project.service.ProjektServiceImpl.deleteProjekt(102) - REQUEST -> DELETE /api/projekty/1
+2025-06-23 14:00:55.726 [http-nio-8081-exec-3] INFO  c.project.service.ProjektServiceImpl.deleteProjekt(102) - REQUEST -> DELETE /api/projekty/1
+2025-06-23 14:01:01.051 [http-nio-8081-exec-4] INFO  c.project.service.ProjektServiceImpl.getProjekt(43) - REQUEST -> GET /api/projekty/1
+2025-06-23 14:01:06.106 [http-nio-8081-exec-5] INFO  c.project.service.ProjektServiceImpl.getProjekt(43) - REQUEST -> GET /api/projekty/1
+2025-06-23 14:01:10.690 [http-nio-8081-exec-7] INFO  c.project.service.StudentServiceImpl.getStudenci(118) - REQUEST -> GET /api/studenci?page=0&size=20&sort=
+2025-06-23 14:01:12.568 [http-nio-8081-exec-8] INFO  c.project.service.ProjektServiceImpl.getProjekty(116) - REQUEST -> GET /api/projekty?page=0&size=20&sort=
+2025-06-23 14:01:20.033 [http-nio-8081-exec-10] INFO  c.project.service.ProjektServiceImpl.getProjekt(43) - REQUEST -> GET /api/projekty/2
+2025-06-23 14:01:29.672 [http-nio-8081-exec-1] INFO  c.project.service.ProjektServiceImpl.setProjekt(59) - REQUEST -> PUT /api/projekty/2
+2025-06-23 14:01:29.827 [http-nio-8081-exec-3] INFO  c.project.service.ProjektServiceImpl.getProjekty(116) - REQUEST -> GET /api/projekty?page=0&size=20&sort=
+2025-06-23 14:01:34.723 [http-nio-8081-exec-5] INFO  c.project.service.ProjektServiceImpl.getProjekt(43) - REQUEST -> GET /api/projekty/2
+2025-06-23 14:01:41.227 [http-nio-8081-exec-6] INFO  c.project.service.ProjektServiceImpl.setProjekt(59) - REQUEST -> PUT /api/projekty/2
+2025-06-23 14:01:41.374 [http-nio-8081-exec-8] INFO  c.project.service.ProjektServiceImpl.getProjekty(116) - REQUEST -> GET /api/projekty?page=0&size=20&sort=
+2025-06-23 14:02:00.811 [http-nio-8081-exec-4] INFO  c.project.service.ProjektServiceImpl.setProjekt(75) - REQUEST -> POST /api/projekty
+2025-06-23 14:02:00.935 [http-nio-8081-exec-4] INFO  c.project.service.ProjektServiceImpl.setProjekt(87) - REQUEST (location) -> GET http://localhost:8080/api/projekty/3
+2025-06-23 14:02:01.072 [http-nio-8081-exec-5] INFO  c.project.service.ProjektServiceImpl.getProjekty(116) - REQUEST -> GET /api/projekty?page=0&size=20&sort=
+2025-06-23 14:02:30.195 [http-nio-8081-exec-3] INFO  c.project.service.ProjektServiceImpl.setProjekt(75) - REQUEST -> POST /api/projekty
+2025-06-23 14:02:30.331 [http-nio-8081-exec-3] INFO  c.project.service.ProjektServiceImpl.setProjekt(87) - REQUEST (location) -> GET http://localhost:8080/api/projekty/4
+2025-06-23 14:02:30.459 [http-nio-8081-exec-4] INFO  c.project.service.ProjektServiceImpl.getProjekty(116) - REQUEST -> GET /api/projekty?page=0&size=20&sort=
+2025-06-23 14:02:38.643 [http-nio-8081-exec-8] INFO  c.project.service.ProjektServiceImpl.setProjekt(75) - REQUEST -> POST /api/projekty
+2025-06-23 14:02:38.765 [http-nio-8081-exec-8] INFO  c.project.service.ProjektServiceImpl.setProjekt(87) - REQUEST (location) -> GET http://localhost:8080/api/projekty/5
+2025-06-23 14:02:38.892 [http-nio-8081-exec-9] INFO  c.project.service.ProjektServiceImpl.getProjekty(116) - REQUEST -> GET /api/projekty?page=0&size=20&sort=
+2025-06-23 14:02:40.550 [http-nio-8081-exec-2] INFO  c.project.service.ProjektServiceImpl.getProjekt(43) - REQUEST -> GET /api/projekty/5
+2025-06-23 14:02:44.204 [http-nio-8081-exec-3] INFO  c.project.service.ProjektServiceImpl.deleteProjekt(102) - REQUEST -> DELETE /api/projekty/5
+2025-06-23 14:02:44.340 [http-nio-8081-exec-4] INFO  c.project.service.ProjektServiceImpl.getProjekty(116) - REQUEST -> GET /api/projekty?page=0&size=20&sort=
+2025-06-23 14:06:41.373 [http-nio-8081-exec-6] INFO  c.project.service.StudentServiceImpl.getStudenci(118) - REQUEST -> GET /api/studenci?page=0&size=20&sort=
+2025-06-23 14:07:02.594 [http-nio-8081-exec-1] INFO  c.project.service.StudentServiceImpl.setStudent(80) - REQUEST -> POST /api/studenci
+2025-06-23 14:07:03.440 [http-nio-8081-exec-1] INFO  c.project.service.StudentServiceImpl.setStudent(91) - REQUEST (location) -> GET http://localhost:8080/api/studenci/1
+2025-06-23 14:07:05.513 [http-nio-8081-exec-3] INFO  c.project.service.StudentServiceImpl.getStudenci(118) - REQUEST -> GET /api/studenci?page=0&size=20&sort=
+2025-06-23 14:07:11.179 [http-nio-8081-exec-5] INFO  c.project.service.ZadanieServiceImpl.getZadania(40) - REQUEST -> GET /api/zadania?page=0&size=20&sort=
+2025-06-23 14:07:38.752 [http-nio-8081-exec-9] INFO  c.project.service.ZadanieServiceImpl.setZadanie(81) - REQUEST -> POST /api/zadania
+2025-06-23 14:07:47.037 [http-nio-8081-exec-3] INFO  c.project.service.ZadanieServiceImpl.getZadania(40) - REQUEST -> GET /api/zadania?page=0&size=20&sort=
+2025-06-23 14:07:48.986 [http-nio-8081-exec-5] INFO  c.project.service.StudentServiceImpl.getStudenci(118) - REQUEST -> GET /api/studenci?page=0&size=20&sort=
+2025-06-23 14:15:06.745 [restartedMain] INFO  c.p.ProjectRestApiApplicationFrontEnd.logStarting(53) - Starting ProjectRestApiApplicationFrontEnd using Java 21.0.6 with PID 11716 (C:\Szkola\Adv_Obj_Porgramming_Java\lab5\build\classes\java\main started by HP in C:\Szkola\Adv_Obj_Porgramming_Java\lab5)
+2025-06-23 14:15:06.748 [restartedMain] INFO  c.p.ProjectRestApiApplicationFrontEnd.logStartupProfileInfo(652) - No active profile set, falling back to 1 default profile: "default"
+2025-06-23 14:15:08.696 [restartedMain] INFO  c.p.ProjectRestApiApplicationFrontEnd.logStarting(53) - Starting ProjectRestApiApplicationFrontEnd using Java 21.0.6 with PID 3792 (C:\Szkola\Adv_Obj_Porgramming_Java\lab5\build\classes\java\main started by HP in C:\Szkola\Adv_Obj_Porgramming_Java\lab5)
+2025-06-23 14:15:08.698 [restartedMain] INFO  c.p.ProjectRestApiApplicationFrontEnd.logStartupProfileInfo(652) - No active profile set, falling back to 1 default profile: "default"
+2025-06-23 14:15:11.031 [restartedMain] INFO  c.p.ProjectRestApiApplicationFrontEnd.logStarted(59) - Started ProjectRestApiApplicationFrontEnd in 5.831 seconds (process running for 7.922)
+2025-06-23 14:15:31.648 [http-nio-8081-exec-1] INFO  c.project.service.StudentServiceImpl.getStudenci(118) - REQUEST -> GET /api/studenci?page=0&size=20&sort=
+2025-06-23 14:15:33.617 [http-nio-8081-exec-3] INFO  c.project.service.ProjektServiceImpl.getProjekty(116) - REQUEST -> GET /api/projekty?page=0&size=20&sort=
+2025-06-23 14:15:33.696 [http-nio-8081-exec-4] INFO  c.project.service.ProjektServiceImpl.getProjekty(116) - REQUEST -> GET /api/projekty?page=0&size=20&sort=
+2025-06-23 14:15:36.218 [http-nio-8081-exec-6] INFO  c.project.service.StudentServiceImpl.getStudenci(118) - REQUEST -> GET /api/studenci?page=0&size=20&sort=
+2025-06-23 14:15:36.939 [http-nio-8081-exec-8] INFO  c.project.service.ProjektServiceImpl.getProjekty(116) - REQUEST -> GET /api/projekty?page=0&size=20&sort=
+2025-06-23 14:28:56.164 [http-nio-8081-exec-6] INFO  c.project.service.ProjektServiceImpl.getProjekty(116) - REQUEST -> GET /api/projekty?page=0&size=20&sort=
+2025-06-23 14:28:56.240 [http-nio-8081-exec-8] INFO  c.project.service.ProjektServiceImpl.getProjekty(116) - REQUEST -> GET /api/projekty?page=0&size=20&sort=
+2025-06-23 14:29:47.446 [http-nio-8081-exec-4] INFO  c.project.service.ProjektServiceImpl.setProjekt(75) - REQUEST -> POST /api/projekty
+2025-06-23 14:29:47.799 [http-nio-8081-exec-4] INFO  c.project.service.ProjektServiceImpl.setProjekt(87) - REQUEST (location) -> GET http://localhost:8080/api/projekty/52
+2025-06-23 14:29:47.954 [http-nio-8081-exec-5] INFO  c.project.service.ProjektServiceImpl.getProjekty(116) - REQUEST -> GET /api/projekty?page=0&size=20&sort=
+2025-06-23 14:29:51.074 [http-nio-8081-exec-8] INFO  c.project.service.ProjektServiceImpl.getProjekt(43) - REQUEST -> GET /api/projekty/52
+2025-06-23 14:29:55.161 [http-nio-8081-exec-1] INFO  c.project.service.ProjektServiceImpl.setProjekt(59) - REQUEST -> PUT /api/projekty/52
+2025-06-23 14:29:55.320 [http-nio-8081-exec-2] INFO  c.project.service.ProjektServiceImpl.getProjekty(116) - REQUEST -> GET /api/projekty?page=0&size=20&sort=
+2025-06-23 14:29:57.560 [http-nio-8081-exec-5] INFO  c.project.service.ProjektServiceImpl.getProjekt(43) - REQUEST -> GET /api/projekty/52
+2025-06-23 14:29:59.076 [http-nio-8081-exec-8] INFO  c.project.service.ProjektServiceImpl.deleteProjekt(102) - REQUEST -> DELETE /api/projekty/52
+2025-06-23 14:29:59.245 [http-nio-8081-exec-9] INFO  c.project.service.ProjektServiceImpl.getProjekty(116) - REQUEST -> GET /api/projekty?page=0&size=20&sort=
+2025-06-23 14:30:03.400 [http-nio-8081-exec-2] INFO  c.project.service.StudentServiceImpl.getStudenci(118) - REQUEST -> GET /api/studenci?page=0&size=20&sort=
+2025-06-23 14:30:03.478 [http-nio-8081-exec-3] INFO  c.project.service.StudentServiceImpl.getStudenci(118) - REQUEST -> GET /api/studenci?page=0&size=20&sort=
+2025-06-23 23:09:18.838 [http-nio-8081-exec-6] INFO  c.project.service.ProjektServiceImpl.getProjekty(116) - REQUEST -> GET /api/projekty?page=0&size=20&sort=
+2025-06-23 23:10:26.179 [http-nio-8081-exec-1] INFO  c.project.service.StudentServiceImpl.getStudenci(118) - REQUEST -> GET /api/studenci?page=0&size=20&sort=

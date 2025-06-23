@@ -15,41 +15,43 @@ import java.util.Optional;
 @Service
 public class ProjektServiceImpl implements ProjektService {
 
-    private final ProjektRepository projektRepository;
-    private final ZadanieRepository zadanieRepository;
+	private ProjektRepository projektRepository;
+	private ZadanieRepository zadanieRepository;
 
-    @Autowired
-    public ProjektServiceImpl(ProjektRepository projektRepository, ZadanieRepository zadanieRepository) {
-        this.projektRepository = projektRepository;
-        this.zadanieRepository = zadanieRepository;
-    }
+	@Autowired // w tej wersji konstruktora Spring wstrzyknie dwa repozytoria
+	public ProjektServiceImpl(ProjektRepository projektRepository, ZadanieRepository zadanieRepo) {
+		this.projektRepository = projektRepository;
+		this.zadanieRepository = zadanieRepo;
+	}
 
-    @Override
-    public Optional<Projekt> getProjekt(Integer projektId) {
-        return projektRepository.findById(projektId);
-    }
 
-    @Override
-    public Projekt setProjekt(Projekt projekt) {
-        return projektRepository.save(projekt);
-    }
+	@Override
+	public Optional<Projekt> getProjekt(Integer projektId) {
+	    return projektRepository.findById(projektId);
+	}
 
-    @Override
-    @Transactional
-    public void deleteProjekt(Integer projektId) {
-        for (Zadanie z : zadanieRepository.findZadaniaProjektu(projektId)) {
-            zadanieRepository.delete(z);
-        }
-        projektRepository.deleteById(projektId);
-    }
+	@Override
+	public Projekt setProjekt(Projekt projekt) {
+	    return projektRepository.save(projekt);
+	}
 
-    @Override
-    public Page<Projekt> getProjekty(Pageable pageable) {
-        return projektRepository.findAll(pageable);
-    }
+	@Override
+	@Transactional
+	public void deleteProjekt(Integer projektId) {
+		for (Zadanie zadanie : zadanieRepository.findZadaniaProjektu(projektId)) {
+			zadanieRepository.delete(zadanie);
+		}
+	projektRepository.deleteById(projektId);
+	}
 
-    @Override
-    public Page<Projekt> searchByNazwa(String nazwa, Pageable pageable) {
-        return projektRepository.findByNazwaContainingIgnoreCase(nazwa, pageable);
-    }
+	@Override
+	public Page<Projekt> getProjekty(Pageable pageable) {
+	    return projektRepository.findAll(pageable);
+	}
+
+	@Override
+	public Page<Projekt> searchByNazwa(String nazwa, Pageable pageable) {
+	    return projektRepository.findByNazwaContainingIgnoreCase(nazwa, pageable);
+	}
+
 }

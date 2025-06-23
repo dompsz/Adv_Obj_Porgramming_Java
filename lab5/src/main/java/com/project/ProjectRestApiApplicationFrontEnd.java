@@ -4,10 +4,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ProjectRestApiApplication {
+public class ProjectRestApiApplicationFrontEnd {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ProjectRestApiApplication.class, args);
+		SpringApplication.run(ProjectRestApiApplicationFrontEnd.class, args);
 	}
-
 }
